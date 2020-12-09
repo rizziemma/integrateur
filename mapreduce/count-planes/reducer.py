@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-import asterix
-import dpkt
 import sys
 
 
