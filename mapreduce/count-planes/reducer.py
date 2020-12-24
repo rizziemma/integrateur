@@ -1,32 +1,34 @@
 #!/usr/bin/python
 
 import sys
+import csv
 
+writer = csv.writer(sys.stdout, delimiter='\t')
 
 planes = 0
 
-oldTime = None
 oldPlane = None
+oldKeys = None
 
 for line in sys.stdin :
 	data = line.strip().split('\t')
-	if len(data) != 2:
+	if len(data) != 6:
 		continue
-	
-	thisTime, thisPlane = data
-	
-	if oldTime and oldTime != thisTime :
-		print('{0}\t{1}'.format(oldTime, planes))
+	thisKeys = data[0:5]
+	thisPlane = data[5]
+#	print(thisKeys)
+#	print(thisPlane)
+
+	if oldKeys and oldKeys != thisKeys :
+		writer.writerow(oldKeys + [planes])
 		planes = 0
-			
-	oldTime = thisTime
+
+	oldKeys = thisKeys
 	if thisPlane != oldPlane :
 		planes += 1
-	
+
 	oldPlane = thisPlane
 
-if oldTime != None:
-	print('{0}\t{1}'.format(oldTime, planes))
-	
+if oldKeys != None:
+	writer.writerow(oldKeys + [planes])
 
-        
